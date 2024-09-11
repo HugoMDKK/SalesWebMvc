@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SalesWebMvc.Data;
 using SalesWebMvc.Services;
+using System.Globalization;
 
 
 
@@ -28,6 +29,14 @@ using (var scope = app.Services.CreateScope())
     var seedingService = scope.ServiceProvider.GetRequiredService<SeedingService>();
     seedingService.Seed();
 }
+
+var enUS = new CultureInfo("en-US");
+var localizationOptions = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(enUS),
+    SupportedCultures = new List<CultureInfo> { enUS },
+    SupportedUICultures = new List<CultureInfo> { enUS }
+};
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
