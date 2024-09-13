@@ -1,4 +1,4 @@
-﻿namespace SalesWebMvc.Controllers
+﻿namespace SalesWebMvc.Models.Enums
 {
     public enum SaleStatus : int
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SalesWebMvc.Controllers;
 using SalesWebMvc.Models;
+using SalesWebMvc.Models.Enums;
 
 namespace SalesWebMvc.Data
 {
