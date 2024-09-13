@@ -18,7 +18,7 @@ namespace SalesWebMvc.Controllers
             _departmentService = departmentService;
             _sellerService = sellerService;
         }
-        public  async Task<IActionResult> Index()
+        public async Task<IActionResult> Index()
         {
             var list = await _sellerService.FindAllAsync();
             return View(list);
@@ -34,7 +34,7 @@ namespace SalesWebMvc.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Seller seller)
-        {            
+        {
             await _sellerService.InsertAsync(seller);
             return RedirectToAction(nameof(Index));
         }
@@ -43,7 +43,7 @@ namespace SalesWebMvc.Controllers
         {
             if (id == null)
             {
-                return RedirectToAction(nameof(Error), new { message = "Id not provided"});
+                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
             }
 
             var obj = await _sellerService.FindByIdAsync(id.Value);
@@ -59,9 +59,18 @@ namespace SalesWebMvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            await _sellerService.RemoveAsync(id);
-            return RedirectToAction(nameof(Index));
-        }
+            try
+            {
+                await _sellerService.RemoveAsync(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (IntegrityException e)
+            {
+                return RedirectToAction(nameof(Error), new { message = e.Message });
+            }
+            }
+
+
 
         public async Task<IActionResult> Details(int? id)
         {
@@ -100,7 +109,7 @@ namespace SalesWebMvc.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Seller seller)
-        {          
+        {
             if (id != seller.Id)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id mismatch" });
